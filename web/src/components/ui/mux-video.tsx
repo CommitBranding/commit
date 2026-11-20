@@ -47,6 +47,9 @@ export function MuxVideo({
       loop={background || undefined}
       playsInline
       preload={background ? 'auto' : 'metadata'}
+      // Short muted loops never play long enough for adaptive streaming to
+      // climb out of its blurry starting rendition, so start at the top.
+      renditionOrder={background ? 'desc' : undefined}
       accentColor={accentColor}
       className={cn(
         background && 'mux-background',
