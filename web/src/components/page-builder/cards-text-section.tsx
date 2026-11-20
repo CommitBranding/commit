@@ -1,5 +1,6 @@
 'use client'
 
+import {stegaClean} from 'next-sanity'
 import {colorHex} from '@/lib/colors'
 import {useOverlay} from '@/components/overlays/overlay-provider'
 import {Container} from '@/components/ui/container'
@@ -146,7 +147,8 @@ function resolveCards(block: CardsTextBlock): {
   pageCards: PageCard[]
   offerings: OfferingCard[]
 } {
-  const source = block.cardsSource
+  // Preview mode stega-encodes strings; clean before comparing.
+  const source = stegaClean(block.cardsSource)
     ?? (block.cards?.length ? 'manual' : block.offerings?.length ? 'offerings' : 'salesPages')
 
   if (source === 'salesPages') {
