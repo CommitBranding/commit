@@ -1,3 +1,4 @@
+import {stegaClean} from 'next-sanity'
 import {PortableText, type PortableTextComponents} from '@portabletext/react'
 import {cn} from '@/lib/cn'
 import {
@@ -88,7 +89,8 @@ export function RichHeadline({
   const resolvedFont = resolveHeadingFont(font, resolved)
   const Tag = as ?? HEADING_DEFAULT_TAG[resolved]
   const spanFull = fullWidth || resolved === 'hero'
-  const sitRight = align === 'right'
+  // Preview mode stega-encodes strings, so clean before comparing.
+  const sitRight = stegaClean(align) === 'right'
 
   return (
     <Tag
