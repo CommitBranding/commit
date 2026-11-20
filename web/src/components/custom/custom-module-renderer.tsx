@@ -537,7 +537,7 @@ export function CustomModuleRenderer({
           // the headline's lowercase letters (x-height top: 0.386em of the headline).
           <ol
             className={cn(
-              'flex flex-col gap-6 md:gap-8',
+              'flex flex-col gap-5',
               nested && 'md:pt-[calc(clamp(2.75rem,5vw,4rem)*0.386_-_4px)]',
             )}
           >
