@@ -1,6 +1,7 @@
 'use client'
 
 import useEmblaCarousel from 'embla-carousel-react'
+import {stegaClean} from 'next-sanity'
 import Image from 'next/image'
 import {useCallback, useEffect, useState} from 'react'
 import {ArrowIcon} from '@/components/ui/arrow-icon'
@@ -14,7 +15,7 @@ const TYPEKIT_ID = process.env.NEXT_PUBLIC_TYPEKIT_ID
 /** Pulls the 11-character id out of watch, share, embed and shorts URLs. */
 export function youtubeId(url?: string): string | null {
   if (!url) return null
-  const match = url.match(
+  const match = stegaClean(url).match(
     /(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/,
   )
   return match ? match[1] : null
@@ -156,17 +157,19 @@ export function CaseStudyVideoCarousel({
 
   if (!slides.length) return null
   const current = slides[selected] ?? slides[0]
+  // Preview mode stega-encodes strings; a hex color must be clean to be valid CSS.
+  const background = panelColor ? stegaClean(panelColor).trim() : undefined
 
   return (
     <div
-      className="w-full px-5 py-10 md:px-8 md:py-16"
-      style={panelColor ? {backgroundColor: panelColor} : undefined}
+      className="flex w-full flex-col justify-center px-5 py-10 md:aspect-[1296/730] md:px-8 md:py-10"
+      style={background ? {backgroundColor: background} : undefined}
     >
       {TYPEKIT_ID ? (
         <link rel="stylesheet" href={`https://use.typekit.net/${TYPEKIT_ID}.css`} precedence="default" />
       ) : null}
 
-      <div className="mx-auto flex w-full max-w-[1100px] items-center gap-4 md:gap-8">
+      <div className="mx-auto flex w-full max-w-[1000px] items-center gap-4 md:gap-8">
         {multiple ? (
           <ArrowButton direction="left" onClick={scrollPrev} className="hidden md:flex" />
         ) : null}
@@ -188,7 +191,7 @@ export function CaseStudyVideoCarousel({
               })}
             </div>
           </div>
-          <div className="mt-6 md:mt-8" aria-live="polite">
+          <div className="mt-5 md:mt-6" aria-live="polite">
             {current.titleImage?.asset ? (
               <div className="relative mx-auto h-8 w-full max-w-[720px] md:h-12">
                 <SanityImage
