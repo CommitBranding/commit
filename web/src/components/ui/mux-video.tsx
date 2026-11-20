@@ -62,9 +62,13 @@ export function MuxVideo({
               height: objectFit === 'cover' ? '100%' : 'auto',
               ...(ratio && objectFit !== 'cover' ? {aspectRatio: ratio} : {}),
               '--controls': 'none',
-              '--media-object-fit': objectFit,
+              // The box already matches the video's ratio, so filling it
+              // (cover) only trims a sub-pixel. That, plus a transparent player
+              // background, stops Mux's black from showing as edge lines on
+              // phones where the box rounds a fraction off the video size.
+              '--media-object-fit': ratio ? 'cover' : objectFit,
               '--media-object-position': 'center',
-              ...(objectFit === 'cover' ? {'--media-background-color': 'transparent'} : {}),
+              '--media-background-color': 'transparent',
             }
           : {
               width: '100%',
