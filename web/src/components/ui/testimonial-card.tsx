@@ -205,7 +205,12 @@ export function TestimonialCard({
         delay={timing.delays.media}
         duration={timing.duration}
         offset={timing.offset}
-        className="relative w-full shrink-0 bg-neutral-100 md:w-1/3 md:self-stretch"
+        // The light placeholder only shows when there's no photo; under a photo
+        // it bled through the photo's fractional bottom edge as a pale hairline.
+        className={cn(
+          'relative w-full shrink-0 md:w-1/3 md:self-stretch',
+          !slide.image && 'bg-neutral-100',
+        )}
       >
         {/*
           Spacer sets the minimum height: 4:3 on phones (a full-width square
