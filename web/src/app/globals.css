@@ -110,3 +110,12 @@ html.intro-pending::before {
     animation: none;
   }
 }
+
+/*
+ * Mux's poster stills come out darker than the video itself (video-range
+ * levels), so a looping video flashes a muddier color before it starts.
+ * Stretch the poster's levels to match the playing video.
+ */
+mux-player::part(poster) {
+  filter: contrast(1.164);
+}
