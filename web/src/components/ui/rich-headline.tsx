@@ -29,6 +29,9 @@ function createComponents(
             sizeClassName,
             'text-[var(--section-heading,var(--foreground))]',
             'overflow-visible',
+            // The size class pads each line for Safari's swash clipping. Keep that
+            // padding on the outer edges only so stacked lines keep their leading.
+            'not-first:pt-0 not-last:pb-0',
             collapseLineBreaksOnMobile ? 'inline md:block' : 'block',
           )}
         >
