@@ -2,6 +2,8 @@
 
 import {
   Children,
+  useEffect,
+  useState,
   type CSSProperties,
   type ElementType,
   type ReactNode,
@@ -54,15 +56,35 @@ export function FadeIn({
   style,
 }: FadeInProps) {
   const [ref, visible] = useInView<HTMLElement>({threshold, rootMargin, once})
+  // WebKit clips glyph ink that overflows a box while a transform transition
+  // is active, and it keeps clipping if that transition stays on the element.
+  // Drop transform and the transition once the fade has finished.
+  const [settled, setSettled] = useState(false)
+
+  useEffect(() => {
+    if (!visible) return
+    const timer = window.setTimeout(() => setSettled(true), delay + duration + 80)
+    return () => window.clearTimeout(timer)
+  }, [visible, delay, duration])
 
   return (
     <Tag
       ref={ref}
-      className={cn(className)}
+      className={cn(
+        'overflow-visible',
+        // Safari clips ink that escapes this box while it is transformed.
+        // The gutter lives on this element (padding kept, margin pulled back)
+        // so an italic f stays inside the clipped box and the text stays put.
+        '[&:has(.swash-heading[data-swash=hero])]:pl-[calc(clamp(3.5rem,12vw,9rem)*0.25)]',
+        '[&:has(.swash-heading[data-swash=hero])]:-ml-[calc(clamp(3.5rem,12vw,9rem)*0.25)]',
+        '[&:has(.swash-heading[data-swash=xl])]:pl-[calc(clamp(3.25rem,7vw,5.6875rem)*0.25)]',
+        '[&:has(.swash-heading[data-swash=xl])]:-ml-[calc(clamp(3.25rem,7vw,5.6875rem)*0.25)]',
+        className,
+      )}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translate3d(0, 0, 0)' : `translate3d(0, ${offset}px, 0)`,
-        transitionProperty: 'opacity, transform',
+        transform: !visible ? `translate3d(0, ${offset}px, 0)` : settled ? undefined : 'none',
+        transitionProperty: settled ? 'none' : 'opacity, transform',
         transitionDuration: `${duration}ms`,
         transitionTimingFunction: FADE_IN_EASE,
         transitionDelay: visible ? `${delay}ms` : '0ms',

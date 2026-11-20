@@ -28,6 +28,7 @@ function createComponents(
             headingClassName(size, font),
             sizeClassName,
             'text-[var(--section-heading,var(--foreground))]',
+            'overflow-visible',
             collapseLineBreaksOnMobile ? 'inline md:block' : 'block',
           )}
         >
@@ -50,7 +51,13 @@ function createComponents(
         <br />
       ),
     marks: {
-      em: ({children}) => <em className="italic">{children}</em>,
+      em: ({children}) => (
+        // Keep the swash inside this element. Safari clips ink that escapes
+        // the italic box; the negative margin puts the word back where it was.
+        <em className="inline italic pl-[0.25em] -ml-[0.25em] pr-[0.15em] -mr-[0.15em]">
+          {children}
+        </em>
+      ),
     },
   }
 }
@@ -94,6 +101,7 @@ export function RichHeadline({
 
   return (
     <Tag
+      data-swash={resolved === 'hero' || resolved === 'xl' ? resolved : undefined}
       className={cn(
         spanFull
           ? 'max-w-none'
@@ -104,10 +112,10 @@ export function RichHeadline({
             : 'w-fit max-w-4xl',
         // Right = pin the text-width block to the right edge. Copy stays left-aligned inside.
         sitRight && !spanFull && 'ml-auto',
-        'text-left',
+        'overflow-visible text-left',
+        (resolved === 'hero' || resolved === 'xl') && 'swash-heading',
         // Reflowed mobile lines balance so no single word is left on the last line.
         !keepLineBreaksOnMobile && 'max-md:text-balance',
-        resolved === 'hero' && '[hanging-punctuation:first_last]',
         className,
       )}
     >

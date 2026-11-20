@@ -251,21 +251,33 @@ export function Navbar({data, variant = 'light'}: NavbarProps) {
     <header
       ref={menuRef}
       className={cn(
-        'relative sticky top-0 z-40 transition-[background-color,backdrop-filter] duration-300',
-        variant === 'dark'
-          ? 'bg-black text-white'
-          : solidNav
-            ? 'bg-page-background/95 text-brand-charcoal backdrop-blur-sm'
-            : 'bg-transparent text-brand-charcoal',
+        'relative sticky top-0 z-40 overflow-visible transition-colors duration-300',
+        variant === 'dark' ? 'text-white' : 'text-brand-charcoal',
       )}
     >
+      {/*
+        Safari treats sticky + backdrop-filter on the same node as overflow:hidden
+        and clips italic headline swashes in the content below. Blur lives on a
+        contained layer instead.
+      */}
+      <div
+        aria-hidden
+        className={cn(
+          'pointer-events-none absolute inset-0 -z-10 transition-opacity duration-300',
+          variant === 'dark'
+            ? 'bg-black'
+            : solidNav
+              ? 'bg-page-background/95 backdrop-blur-sm'
+              : 'bg-transparent',
+        )}
+      />
       <Container className="pt-2 md:pt-3">
         <nav className="flex h-14 items-center justify-between gap-6 md:h-16">
           <Link
             href="/"
             ref={logoRef}
             className={cn(
-              'relative z-10 shrink-0 transition-opacity ease-[cubic-bezier(0.22,1,0.36,1)]',
+              'relative z-10 shrink-0 overflow-visible transition-opacity ease-[cubic-bezier(0.22,1,0.36,1)]',
               introActive ? 'opacity-0 duration-0' : 'duration-500',
             )}
             aria-label="Commit home"

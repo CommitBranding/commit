@@ -100,7 +100,7 @@ export default async function RootLayout({
               <OverlayProvider>
                 {intro.enabled ? <IntroLoader config={intro} /> : null}
                 <Navbar data={navigation as NavigationData} variant="light" />
-                <main className="flex-1">{children}</main>
+                <main className="w-full min-w-0 grow overflow-visible">{children}</main>
                 <Footer data={footer as FooterData} />
                 <OverlayHost />
               </OverlayProvider>

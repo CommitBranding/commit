@@ -4,6 +4,7 @@ type MultilineTextProps = {
   children?: string | null
   className?: string
   style?: React.CSSProperties
+  'data-swash'?: string
   as?: 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'span' | 'div'
   /**
    * When true, Enter line breaks only apply from `md` up.
@@ -22,10 +23,12 @@ export function MultilineText({
   style,
   as: Tag = 'p',
   collapseLineBreaksOnMobile = false,
+  'data-swash': dataSwash,
 }: MultilineTextProps) {
   if (!children) return null
   return (
     <Tag
+      data-swash={dataSwash}
       className={cn(
         collapseLineBreaksOnMobile
           ? 'whitespace-normal md:whitespace-pre-line'

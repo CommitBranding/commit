@@ -37,8 +37,10 @@ export function Heading({
   return (
     <MultilineText
       as={Tag}
+      data-swash={resolved === 'hero' || resolved === 'xl' ? resolved : undefined}
       className={cn(
         headingClassName(resolved, font),
+        (resolved === 'hero' || resolved === 'xl') && 'swash-heading',
         // Reflowed mobile lines balance so no single word is left on the last line.
         !keepLineBreaksOnMobile && 'max-md:text-balance',
         className,

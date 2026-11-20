@@ -48,6 +48,12 @@
   --font-display: var(--font-lust-text);
 }
 
+html,
+body,
+main {
+  overflow: visible;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -68,6 +74,7 @@ summary {
 
 .font-display {
   font-family: var(--font-lust-text), Georgia, 'Times New Roman', serif;
+  overflow: visible;
 }
 
 .font-mono {

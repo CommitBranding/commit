@@ -22,9 +22,10 @@ export function CommitWordmark({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1296 193"
+      viewBox="-8 -10 1312 213"
       fill="none"
-      className={cn('text-brand-charcoal', className)}
+      overflow="visible"
+      className={cn('overflow-visible text-brand-charcoal', className)}
       role="img"
       aria-label={title}
     >

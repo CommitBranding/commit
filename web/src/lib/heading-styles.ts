@@ -109,8 +109,8 @@ export const TEXT_SIZE_CLASSES = {
 
 /** Size metrics only — pair with `HEADING_FONT_CLASSES` via `headingClassName`. */
 export const HEADING_SIZE_CLASSES: Record<HeadingSize, string> = {
-  hero: 'text-[clamp(3.5rem,12vw,9rem)] font-normal leading-[0.96] tracking-[-0.03em] [hanging-punctuation:first_last]',
-  xl: 'text-[clamp(3.25rem,7vw,5.6875rem)] font-normal leading-none tracking-[-0.02em]',
+  hero: 'overflow-visible py-[0.12em] text-[clamp(3.5rem,12vw,9rem)] font-normal leading-[0.96] tracking-[-0.03em]',
+  xl: 'overflow-visible py-[0.08em] text-[clamp(3.25rem,7vw,5.6875rem)] font-normal leading-none tracking-[-0.02em]',
   lg: 'text-[clamp(2.75rem,5vw,4rem)] font-normal leading-[1.1] tracking-[-0.02em]',
   /** Same step as the Flexible “Medium — 48px” headline. */
   '48': 'text-[clamp(2.0625rem,3.75vw,3rem)] font-normal leading-[1.1] tracking-normal',
