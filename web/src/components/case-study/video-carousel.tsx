@@ -51,7 +51,7 @@ function Slide({
   const label = video.title ? `Play ${video.title}` : 'Play video'
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden bg-brand-charcoal">
+    <div className="relative aspect-video w-full overflow-hidden">
       {playing ? (
         <iframe
           className="absolute inset-0 h-full w-full"
@@ -83,6 +83,8 @@ function Slide({
               sizes="(min-width: 1320px) 960px, (min-width: 768px) 72vw, 100vw"
               className="object-cover"
               unoptimized
+              // YouTube thumbnails often carry thin black edges; crop them off.
+              style={{transform: 'scale(1.04)'}}
             />
           )}
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
