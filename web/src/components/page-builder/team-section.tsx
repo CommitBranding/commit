@@ -184,7 +184,7 @@ export function TeamSection({block}: {block: TeamBlock}) {
             ) : null}
             {block.body ? (
               <p
-                className="max-w-none whitespace-pre-line text-base leading-relaxed"
+                className="max-w-[61rem] whitespace-pre-line text-base leading-relaxed"
                 style={{color: 'var(--section-body)'}}
               >
                 {block.body}
