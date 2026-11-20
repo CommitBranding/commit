@@ -278,6 +278,7 @@ export const projectType = defineType({
                   {title: 'Full width image / GIF', value: 'full'},
                   {title: 'Two columns', value: 'twoCol'},
                   {title: 'Video', value: 'video'},
+                  {title: 'Video carousel (YouTube)', value: 'videoCarousel'},
                 ],
                 layout: 'radio',
               },
@@ -357,6 +358,68 @@ export const projectType = defineType({
               fields: caseStudyImageFields,
               hidden: ({parent}) => parent?.layout !== 'video' || Boolean(parent?.videoLoop),
             }),
+            defineField({
+              name: 'videos',
+              title: 'Videos',
+              type: 'array',
+              description:
+                'Click-through carousel. Each slide shows a clean cover with a play button; the YouTube player only loads after a click.',
+              hidden: ({parent}) => parent?.layout !== 'videoCarousel',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  name: 'carouselVideo',
+                  fields: [
+                    defineField({
+                      name: 'youtubeUrl',
+                      title: 'YouTube URL',
+                      type: 'url',
+                      validation: (rule) => rule.required(),
+                    }),
+                    defineField({
+                      name: 'title',
+                      title: 'Title',
+                      type: 'string',
+                      description:
+                        'Shown centered under the video. Text before a colon is bold, e.g. “Leading Through Listening: Usman’s Story”.',
+                    }),
+                    defineField({
+                      name: 'titleImage',
+                      title: 'Title as image (optional)',
+                      type: 'image',
+                      description:
+                        'Use a transparent PNG of the title exported from Figma to show it in a brand font. The Title text above is still used as alt text.',
+                    }),
+                    defineField({
+                      name: 'thumbnail',
+                      title: 'Cover image',
+                      type: 'image',
+                      description: 'Optional. Falls back to the YouTube thumbnail.',
+                      options: imageFieldOptions(),
+                      fields: caseStudyImageFields,
+                    }),
+                  ],
+                  preview: {
+                    select: {title: 'title', subtitle: 'youtubeUrl', media: 'thumbnail'},
+                  },
+                }),
+              ],
+              validation: (rule) =>
+                rule.custom((value, context) => {
+                  const parent = context.parent as {layout?: string} | undefined
+                  if (parent?.layout !== 'videoCarousel') return true
+                  return Array.isArray(value) && value.length > 0 ? true : 'Add at least one video'
+                }),
+            }),
+            defineField({
+              name: 'panelColor',
+              title: 'Background color',
+              type: 'string',
+              description: 'Hex color behind the carousel, e.g. #C8F2FC. Leave empty for none.',
+              hidden: ({parent}) => parent?.layout !== 'videoCarousel',
+              validation: (rule) =>
+                rule.regex(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, {name: 'hex color'}).warning(),
+            }),
           ],
           preview: {
             select: {
@@ -366,8 +429,9 @@ export const projectType = defineType({
               right: 'rightImage',
               poster: 'poster',
               videoLoop: 'videoLoop',
+              firstVideo: 'videos.0.thumbnail',
             },
-            prepare({layout, full, left, right, poster, videoLoop}) {
+            prepare({layout, full, left, right, poster, videoLoop, firstVideo}) {
               const title =
                 layout === 'twoCol'
                   ? 'Two columns'
@@ -375,9 +439,17 @@ export const projectType = defineType({
                     ? videoLoop
                       ? 'Video (looping)'
                       : 'Video'
-                    : 'Full width'
+                    : layout === 'videoCarousel'
+                      ? 'Video carousel'
+                      : 'Full width'
               const media =
-                layout === 'twoCol' ? left || right : layout === 'video' ? poster : full
+                layout === 'twoCol'
+                  ? left || right
+                  : layout === 'video'
+                    ? poster
+                    : layout === 'videoCarousel'
+                      ? firstVideo
+                      : full
               return {
                 title,
                 subtitle: 'Media row',

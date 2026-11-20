@@ -499,6 +499,14 @@ export const PROJECT_BY_SLUG_QUERY = `*[_type == "project" && slug.current == $s
     rightImage,
     poster,
     videoLoop,
+    panelColor,
+    videos[]{
+      _key,
+      youtubeUrl,
+      title,
+      titleImage,
+      thumbnail
+    },
     "video": video.asset->{
       playbackId,
       assetId,

@@ -1,4 +1,5 @@
 import {CaseStudyVideoBlock} from '@/components/case-study/video-block'
+import {CaseStudyVideoCarousel} from '@/components/case-study/video-carousel'
 import {Container} from '@/components/ui/container'
 import {FadeIn, FADE_IN_STAGGER_MS} from '@/components/ui/fade-in'
 import {SanityImage} from '@/components/ui/sanity-image'
@@ -60,6 +61,14 @@ export function CaseStudyMediaGrid({
                   poster={row.poster}
                   loop={Boolean(row.videoLoop)}
                 />
+              </FadeIn>
+            )
+          }
+
+          if (row.layout === 'videoCarousel') {
+            return (
+              <FadeIn key={key} delay={delay}>
+                <CaseStudyVideoCarousel videos={row.videos} panelColor={row.panelColor} />
               </FadeIn>
             )
           }

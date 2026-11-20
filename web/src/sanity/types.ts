@@ -162,7 +162,7 @@ export type MuxVideoAsset = {
 
 export type CaseStudyMediaRow = {
   _key?: string
-  layout?: 'full' | 'twoCol' | 'video'
+  layout?: 'full' | 'twoCol' | 'video' | 'videoCarousel'
   image?: SanityImage
   leftImage?: SanityImage
   rightImage?: SanityImage
@@ -170,6 +170,19 @@ export type CaseStudyMediaRow = {
   /** Autoplay muted loop with no controls (ambient / GIF-like). */
   videoLoop?: boolean
   poster?: SanityImage
+  /** Video carousel (YouTube) slides. */
+  videos?: CaseStudyCarouselVideo[]
+  /** Hex background behind the carousel. */
+  panelColor?: string
+}
+
+export type CaseStudyCarouselVideo = {
+  _key?: string
+  youtubeUrl?: string
+  title?: string
+  /** Optional pre-rendered title (brand font) shown instead of live text. */
+  titleImage?: SanityImage
+  thumbnail?: SanityImage
 }
 
 export type DetailAttributes = {
