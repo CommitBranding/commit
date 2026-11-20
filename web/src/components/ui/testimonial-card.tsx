@@ -228,7 +228,9 @@ export function TestimonialCard({
         ) : null}
       </StaggerItem>
       <div
-        className="flex flex-1 flex-col justify-between gap-10 p-6 md:p-10 lg:p-12"
+        // Phones: tuck the color box 1px under the photo so the photo's
+        // fractional height can't leave a light hairline seam between them.
+        className="flex flex-1 flex-col justify-between gap-10 p-6 max-md:-mt-px md:p-10 lg:p-12"
         style={{backgroundColor: bg, color: text}}
       >
         {sectionInView ? (
